@@ -1,9 +1,9 @@
 #include "Grade.h"
 
-Grade::Grade() 
+Grade::Grade()
 {
-	SetValue(0);
-	SetSubject("");
+	SetValue(2);
+	SetSubject("None");
 }
 
 Grade::Grade(double value, const char* subject)
@@ -54,7 +54,7 @@ const char* Grade::GetSubject() const
 
 void Grade::SetSubject(const char* subject)
 {
-	delete[] m_subject;
+	//delete[] m_subject;
 
 	if (!subject || subject[0] == '\0')
 	{
