@@ -6,6 +6,7 @@ Student::Student(int fn, const char* name, const Grade* grades, int gradesCount,
 {
 	SetFacultyNumber(fn);
 	SetName(name);
+	SetGradesCount(gradesCount);
 	SetGrades(grades, gradesCount);
 	SetSpeciality(spec);
 }
@@ -117,4 +118,18 @@ Student::~Student()
 {
 	delete[] m_name;
 	delete[] m_grades;
+}
+
+std::ostream& operator<<(std::ostream& out, const Student& student)
+{
+	out << student.m_name << " " << student.m_facultyNumber << " " << student.m_speciality << " Grades: ";
+
+	int gradesCount = student.m_gradesCount;
+	
+	for (int i = 0; i < gradesCount; i++)
+	{
+		out << student.m_grades[i].GetSubject() << ": " << student.m_grades[i].GetValue() << '\n';
+	}
+
+	return out;
 }

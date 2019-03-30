@@ -70,3 +70,23 @@ Grade::~Grade()
 {
 	delete[] m_subject;
 }
+
+std::ostream& operator<<(std::ostream& out, const Grade& grade)
+{
+	out << grade.m_subject << ": " << grade.m_value;
+
+	return out;
+}
+
+std::istream& operator>>(std::istream& in, Grade& grade)
+{
+	double value = 0;
+	char newSubj[51];
+
+	in >> value;
+	in.getline(newSubj, 50);
+	grade.SetValue(value);
+	grade.SetSubject(newSubj);
+
+	return in;
+}

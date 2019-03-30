@@ -21,12 +21,6 @@ public:
 
 	~Grade();
 
-	//friend std::ostream& operator<<(std::ostream&, const Grade&);
+	friend std::ostream& operator<<(std::ostream&, const Grade&);
+	friend std::istream& operator>>(std::istream&, Grade&);
 };
-
-//std::ostream& operator<<(std::ostream& out, const Grade& grade)
-//{
-//	out << grade.m_subject << ": " << grade.m_value << '\n';
-//
-//	return out;
-//}

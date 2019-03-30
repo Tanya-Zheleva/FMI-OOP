@@ -29,4 +29,6 @@ public:
 	const Speciality GetSpeciality() const;
 
 	~Student();
+
+	friend std::ostream& operator<<(std::ostream&, const Student&);
 };
