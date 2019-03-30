@@ -22,12 +22,6 @@ int main()
 	st = st2;
 
 	cout << st << endl;
-	/*cout << st.GetName() << " " << st.GetFacultyNumber() << " " << st.GetSpeciality() << endl;
-
-	for (int i = 0; i < st.GetGradesCount(); i++)
-	{
-		cout << st.GetGrades()[i].GetSubject() << ": " << st.GetGrades()[i].GetValue() << endl;
-	}*/
 
 	while (true) {}
 	return 0;

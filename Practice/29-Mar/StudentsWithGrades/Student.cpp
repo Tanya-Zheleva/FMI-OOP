@@ -128,7 +128,7 @@ std::ostream& operator<<(std::ostream& out, const Student& student)
 	
 	for (int i = 0; i < gradesCount; i++)
 	{
-		out << student.m_grades[i].GetSubject() << ": " << student.m_grades[i].GetValue() << '\n';
+		out << student.m_grades[i].GetSubject() << ": " << student.m_grades[i].GetValue() << ' ';
 	}
 
 	return out;
