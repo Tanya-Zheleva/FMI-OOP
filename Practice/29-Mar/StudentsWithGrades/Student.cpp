@@ -133,3 +133,10 @@ std::ostream& operator<<(std::ostream& out, const Student& student)
 
 	return out;
 }
+
+std::istream& operator>>(std::istream in, Student& student)
+{
+
+
+	return in;
+}

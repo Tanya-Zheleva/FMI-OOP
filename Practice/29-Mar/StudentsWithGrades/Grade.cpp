@@ -25,6 +25,7 @@ Grade& Grade::operator=(const Grade& other)
 {
 	if (this != &other)
 	{
+		delete[] m_subject;
 		SetValue(other.m_value);
 		SetSubject(other.m_subject);
 	}
@@ -54,8 +55,6 @@ const char* Grade::GetSubject() const
 
 void Grade::SetSubject(const char* subject)
 {
-	//delete[] m_subject;
-
 	if (!subject || subject[0] == '\0')
 	{
 		subject = "None";

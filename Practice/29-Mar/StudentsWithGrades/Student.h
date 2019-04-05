@@ -31,4 +31,5 @@ public:
 	~Student();
 
 	friend std::ostream& operator<<(std::ostream&, const Student&);
+	friend std::istream& operator>>(std::istream&, Student&);
 };
