@@ -1,9 +1,14 @@
 #include "Grade.h"
 
-Grade::Grade()
+void Grade::Free()
 {
-	SetValue(2);
-	SetSubject("None");
+	delete[] subject;
+}
+
+void Grade::CopyFrom(const Grade& other)
+{
+	SetValue(other.value);
+	SetSubject(other.subject);
 }
 
 Grade::Grade(double value, const char* subject)
@@ -14,20 +19,15 @@ Grade::Grade(double value, const char* subject)
 
 Grade::Grade(Grade& other)
 {
-	if (this != &other)
-	{
-		SetValue(other.m_value);
-		SetSubject(other.m_subject);
-	}
+	CopyFrom(other);
 }
 
 Grade& Grade::operator=(const Grade& other)
 {
 	if (this != &other)
 	{
-		delete[] m_subject;
-		SetValue(other.m_value);
-		SetSubject(other.m_subject);
+		Free();
+		CopyFrom(other);
 	}
 
 	return *this;
@@ -35,44 +35,38 @@ Grade& Grade::operator=(const Grade& other)
 
 double Grade::GetValue() const
 {
-	return m_value;
+	return value;
 }
 
 void Grade::SetValue(double value)
 {
-	if (value < 2 || value > 6)
-	{
-		value = 2;
-	}
+	if (value < 2 || value > 6) value = 2;
 
-	m_value = value;
+	this->value = value;
 }
 
 const char* Grade::GetSubject() const
 {
-	return m_subject;
+	return subject;
 }
 
 void Grade::SetSubject(const char* subject)
 {
-	if (!subject || subject[0] == '\0')
-	{
-		subject = "None";
-	}
+	if (!subject || subject[0] == '\0') subject = "None";
 
 	int length = strlen(subject) + 1;
-	m_subject = new char[length];
-	strcpy_s(m_subject, length, subject);
+	this->subject = new char[length];
+	strcpy_s(this->subject, length, subject);
 }
 
 Grade::~Grade()
 {
-	delete[] m_subject;
+	delete[] subject;
 }
 
 std::ostream& operator<<(std::ostream& out, const Grade& grade)
 {
-	out << grade.m_subject << ": " << grade.m_value;
+	out << grade.subject << ": " << grade.value;
 
 	return out;
 }

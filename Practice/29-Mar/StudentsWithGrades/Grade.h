@@ -4,15 +4,16 @@
 class Grade
 {
 private:
-	double m_value;
-	char* m_subject;
+	double value;
+	char* subject;
 
 	void SetValue(double);
 	void SetSubject(const char*);
+	void CopyFrom(const Grade&);
+	void Free();
 
 public:
-	Grade();
-	Grade(double, const char*);
+	Grade(double = 2.0, const char* = "None");
 	Grade(Grade& other);
 	Grade& operator=(const Grade& other);
 

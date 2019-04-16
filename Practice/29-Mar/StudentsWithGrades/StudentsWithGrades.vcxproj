@@ -118,9 +118,12 @@
     <ClInclude Include="Grade.h" />
     <ClInclude Include="Speciality.h" />
     <ClInclude Include="Student.h" />
+    <ClInclude Include="Teacher.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Grade.cpp" />
+    <ClCompile Include="Person.cpp" />
+    <ClCompile Include="Person.h" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="Student.cpp" />
   </ItemGroup>

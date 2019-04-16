@@ -1,29 +1,30 @@
 #pragma once
 #include "Grade.h"
 #include "Speciality.h"
+#include "Person.h"
 
-class Student
+class Student : public Person
 {
 private:
-	int m_facultyNumber;
-	char* m_name;
-	int m_gradesCount;
-	Grade* m_grades;
-	Speciality m_speciality;
+	int facultyNumber;
+	int gradesCount;
+	Grade* grades;
+	Speciality speciality;
 
 	void SetFacultyNumber(int);
-	void SetName(const char*);
 	void SetGradesCount(int);
 	void SetGrades(const Grade*, int);
 	void SetSpeciality(const Speciality);
 
+	void CopyStudent(const Student&);
+	void Free();
+
 public:
-	Student(int, const char*, const Grade*, int,  const Speciality);
+	Student(const char*, int, int, int, const Grade*, int,  const Speciality);
 	Student(const Student&);
 	Student& operator=(const Student&);
 
 	int GetFacultyNumber() const;
-	const char* GetName() const;
 	int GetGradesCount() const;
 	const Grade* GetGrades() const;
 	const Speciality GetSpeciality() const;
@@ -31,5 +32,4 @@ public:
 	~Student();
 
 	friend std::ostream& operator<<(std::ostream&, const Student&);
-	friend std::istream& operator>>(std::istream&, Student&);
 };

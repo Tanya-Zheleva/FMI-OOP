@@ -2,36 +2,39 @@
 #include "Student.h"
 #include "Speciality.h"
 
-Student::Student(int fn, const char* name, const Grade* grades, int gradesCount, const Speciality spec)
+void Student::Free()
+{
+	delete[] grades;
+}
+
+void Student::CopyStudent(const Student& other)
+{
+	SetFacultyNumber(other.facultyNumber);
+	SetGradesCount(other.gradesCount);
+	SetGrades(other.grades, other.gradesCount);
+	SetSpeciality(other.speciality);
+}
+
+Student::Student(const char* name, int id, int number, int fn, const Grade* grades, int gradesCount, const Speciality spec)
+	: Person(name, id, number)
 {
 	SetFacultyNumber(fn);
-	SetName(name);
 	SetGradesCount(gradesCount);
 	SetGrades(grades, gradesCount);
 	SetSpeciality(spec);
 }
 
-Student::Student(const Student& other)
+Student::Student(const Student& other) : Person(other)
 {
-	if (this != &other)
-	{
-		SetFacultyNumber(other.m_facultyNumber);
-		SetName(other.m_name);
-		SetGradesCount(other.m_gradesCount);
-		SetGrades(other.m_grades, other.m_gradesCount);
-		SetSpeciality(other.m_speciality);
-	}
+	CopyStudent(other);
 }
 
 Student& Student::operator=(const Student& other)
 {
 	if (this != &other)
 	{
-		SetFacultyNumber(other.m_facultyNumber);
-		SetName(other.m_name);
-		SetGradesCount(other.m_gradesCount);
-		SetGrades(other.m_grades, other.m_gradesCount);
-		SetSpeciality(other.m_speciality);
+		Person::operator=(other);
+		CopyStudent(other);
 	}
 
 	return *this;
@@ -39,104 +42,65 @@ Student& Student::operator=(const Student& other)
 
 int Student::GetFacultyNumber() const
 {
-	return m_facultyNumber;
+	return facultyNumber;
 }
 
 void Student::SetFacultyNumber(int fn)
 {
-	if (fn < 10000 || fn > 99999)
-	{
-		fn = 10000;
-	}
+	if (fn < 10000 || fn > 99999) fn = 10000;
 
-	m_facultyNumber = fn;
-}
-
-const char* Student::GetName() const
-{
-	return m_name;
-}
-
-void Student::SetName(const char* name)
-{
-	delete[] m_name;
-
-	if (!name || name[0] == '\0')
-	{
-		name = "Unknown";
-	}
-
-	int length = strlen(name) + 1;
-
-	m_name = new char[length];
-	strcpy_s(m_name, length, name);
+	facultyNumber = fn;
 }
 
 int Student::GetGradesCount() const
 {
-	return m_gradesCount;
+	return gradesCount;
 }
 
 void Student::SetGradesCount(int count)
 {
-	if (count < 0)
-	{
-		count = 0;
-	}
+	if (count < 0) count = 0;
 
-	m_gradesCount = count;
+	gradesCount = count;
 }
 
 const Grade* Student::GetGrades() const
 {
-	return m_grades;
+	return grades;
 }
 
 void Student::SetGrades(const Grade* grades, int count)
 {
-	delete[] m_grades;
+	this->grades = new Grade[count];
 
-	m_grades = new Grade[count];
-
-	for (int i = 0; i < count; i++)
-	{
-		m_grades[i] = grades[i];
-	}
+	for (int i = 0; i < count; i++) this->grades[i] = grades[i];
 }
 
 const Speciality Student::GetSpeciality() const
 {
-	return m_speciality;
+	return speciality;
 }
 
 void Student::SetSpeciality(const Speciality spec)
 {
-	m_speciality = spec;
+	speciality = spec;
 }
 
 Student::~Student()
 {
-	delete[] m_name;
-	delete[] m_grades;
+	Free();
 }
 
 std::ostream& operator<<(std::ostream& out, const Student& student)
 {
-	out << student.m_name << " " << student.m_facultyNumber << " " << student.m_speciality << " Grades: ";
+	out << student.name << " " << student.facultyNumber << " " << student.speciality << " Grades: ";
 
-	int gradesCount = student.m_gradesCount;
-	
+	int gradesCount = student.gradesCount;
+
 	for (int i = 0; i < gradesCount; i++)
 	{
-		out << student.m_grades[i].GetSubject() << ": " << student.m_grades[i].GetValue() << ' ';
+		out << student.grades[i].GetSubject() << ": " << student.grades[i].GetValue() << ' ';
 	}
 
 	return out;
-}
-
-std::istream& operator>>(std::istream in, Student& student)
-{
-
-
-	return in;
 }
