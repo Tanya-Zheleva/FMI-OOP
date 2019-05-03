@@ -5,7 +5,7 @@ class Vector
 {
 private:
 	T* m_buffer;
-	unsigned int m_index;
+	unsigned int index;
 	unsigned int m_size;
 	unsigned int m_capacity;
 
@@ -35,7 +35,7 @@ public:
 
 	unsigned int size() const;
 	unsigned int capacity() const;
-	//void resize(unsigned int newSize);
+	void resize(unsigned int);
 	bool empty() const;
 	//const T& back() const; // value of last element
 	//void clear();
@@ -48,7 +48,7 @@ template <class T>
 Vector<T>::Vector()
 {
 	m_size = 0;
-	m_index = 0;
+	index = 0;
 	m_capacity = 2;
 	m_buffer = new T[m_capacity];
 }
@@ -58,7 +58,7 @@ Vector<T>::Vector(const unsigned int size)
 {
 	calcCapacity(size);
 
-	m_index = 0;
+	index = 0;
 	m_size = size;
 	m_buffer = new T[size];
 }
@@ -69,7 +69,7 @@ Vector<T>::Vector(unsigned int size, const T& value)
 	calcCapacity(size);
 
 	m_size = size;
-	m_index = size;
+	index = size;
 	m_buffer = new T[size];
 	fill(value);
 }
@@ -135,10 +135,33 @@ unsigned int Vector<T>::capacity() const
 template <class T>
 bool Vector<T>::empty() const
 {
-	return m_index == 0;
+	return index == 0;
 }
 
+template <class T>
+void Vector<T>::resize(unsigned int n)
+{
+	if (n < m_size)
+	{
+		T* temp = new T[n];
 
+		for (int i = 0; i < n; i++)
+		{
+			temp[i] = m_buffer[i];
+		}
+
+		free();
+		m_buffer = new T[n];
+
+		for (int i = 0; i < n; i++)
+		{
+			m_buffer[i] = temp[i];
+		}
+
+		delete[] temp;
+		m_size = n;
+	}
+}
 
 
 //private
@@ -182,11 +205,11 @@ void Vector<T>::copyFrom(const Vector<T>& other)
 {
 	m_capacity = other.m_capacity;
 	m_size = other.m_size;
-	m_index = other.m_index;
+	index = other.index;
 
 	m_buffer = new T[m_size];
 
-	for (int i = 0; i < m_index; i++)
+	for (int i = 0; i < index; i++)
 	{
 		m_buffer[i] = other.m_buffer[i];
 	}
@@ -212,7 +235,7 @@ void Vector<T>::copyFrom(const Vector<T>& other)
 template <class T>
 void Vector<T>::print() const
 {
-	for (int i = 0; i < m_index; i++)
+	for (int i = 0; i < index; i++)
 	{
 		std::cout << m_buffer[i] << ' ';
 	}
