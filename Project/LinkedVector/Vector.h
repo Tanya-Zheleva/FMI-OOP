@@ -13,6 +13,7 @@ private:
 	void free();
 	void fill(const unsigned int, const T&);
 	void copyFrom(const Vector<T>&);
+	T& elementAt(const unsigned int) const;
 
 public:
 	//TODO: Add move constructor
@@ -26,14 +27,14 @@ public:
 	~Vector();
 	Vector<T>& operator=(const Vector<T>&);
 
-	//T& operator [](const int);
-	//const T& operator [](const int) const;
+	T& operator [](const unsigned int);
+	const T& operator [](const unsigned int) const;
 
 	void push_back(const T&);
 	void pop_back();
 
 	unsigned int size() const;
-	//void resize(unsigned int);
+	void resize(const int);
 	bool empty() const;
 	const T& back() const; // value of last element
 	void clear();
@@ -100,7 +101,7 @@ const T& Vector<T>::back() const
 	return last->value;
 }
 
-template <typename T> 
+template <typename T>
 bool Vector<T>::empty() const
 {
 	return first == nullptr;
@@ -161,7 +162,49 @@ void Vector<T>::pop_back()
 	delete current;
 }
 
+template <typename T>
+void Vector<T>::resize(const int n)
+{
+	if (n < 0)
+	{
+		throw std::invalid_argument("New size cannot be negative.");
+	}
 
+	if (index == n)
+	{
+		return;
+	}
+
+	if (n < index)
+	{
+		while (index >= n)
+		{
+			pop_back();
+			index--;
+		}
+
+		return;
+	}
+
+	while (index <= n)
+	{
+		push_back(T());
+		index++;
+	}
+}
+
+// access
+template <typename T>
+T& Vector<T>::operator[](const unsigned int positon)
+{
+	return elementAt(positon);
+}
+
+template <typename T>
+const T& Vector<T>::operator[](const unsigned int position) const
+{
+	return elementAt(position);
+}
 
 
 //private
@@ -187,6 +230,29 @@ void Vector<T>::copyFrom(const Vector<T>& other)
 	}
 }
 
+template <typename T>
+T& Vector<T>::elementAt(const unsigned int positon) const
+{
+	if (positon >= index)
+	{
+		throw std::out_of_range("Index out of range.");
+	}
+
+	int current = 0;
+
+	Node<T>* temp = first;
+
+	while (temp != nullptr)
+	{
+		if (positon == current)
+		{
+			return temp->value;
+		}
+
+		temp = temp->next;
+		current++;
+	}
+}
 
 ////////////////////////////
 

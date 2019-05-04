@@ -6,13 +6,22 @@ using namespace std;
 
 int main()
 {
-	Vector<char> v(5, 'a');
-	Vector<char> v2(6, 'k');
-	v = v2;
+	try
+	{
+		Vector<int> v;
+		v.push_back(5);
+		v.push_back(8);
+		v.push_back(13);
+		v.push_back(10);
+		v.push_back(7);
 
-	v.print();
-
-	cout << v.size() << endl;
+		v.resize(-7);
+		v.print();;
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}
 
 	while (true) {}
 	return 0;
