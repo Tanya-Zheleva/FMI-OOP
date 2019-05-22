@@ -16,6 +16,31 @@ private:
 	T& elementAt(const unsigned int) const;
 
 public:
+	class Iterator
+	{
+	private:
+		Node<T>* start;
+		Node<T>* current;
+
+	public:
+		Iterator();
+		Iterator(const Node<T>*);
+
+		const T& getCurrent() const;
+		void setCurrent(const T&);
+		void moveNext();
+		void restart();
+		bool endReached() const;
+
+		/*T& operator*() const;
+		bool operator!=(const Iterator&);
+		Iterator& operator++(int);*/
+	};
+
+	Vector<T>::Iterator getIterator() const;
+	//Iterator begin();
+	//Iterator end();
+
 	//TODO: Add move constructor
 
 	Vector();
@@ -42,6 +67,86 @@ public:
 
 	void print() const;
 };
+
+template <typename T>
+Vector<T>::Iterator::Iterator() : start(nullptr), current(nullptr)
+{
+}
+
+template <typename T>
+Vector<T>::Iterator::Iterator(const Node<T>* ptr) : start(ptr), current(ptr)
+{
+}
+
+template <typename T>
+const T& Vector<T>::Iterator::getCurrent() const
+{
+	return current->value;
+}
+
+template <typename T>
+void Vector<T>::Iterator::setCurrent(const T& value)
+{
+	current->value = value;
+}
+
+template <typename T>
+void Vector<T>::Iterator::moveNext()
+{
+	if (current)
+	{
+		current = current->next;
+	}
+}
+
+template <typename T>
+void Vector<T>::Iterator::restart()
+{
+	current = start;
+}
+
+template <typename T>
+bool Vector<T>::Iterator::endReached() const
+{
+	return current == nullptr;
+}
+
+template <typename T>
+Vector<T>::Iterator Vector<T>::getIterator() const
+{
+	return Iterator(first);
+}
+
+//template <typename T>
+//T& Vector<T>::Iterator::operator*() const
+//{
+//	return pointer->value;
+//}
+//
+//template <typename T>
+//bool Vector<T>::Iterator::operator!=(const Iterator& other)
+//{
+//	return pointer != other.pointer;
+//}
+//
+//template <typename T>
+//Iterator Vector<T>::Iterator::operator++()
+//{
+//
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 template <typename T>
 Vector<T>::Vector()

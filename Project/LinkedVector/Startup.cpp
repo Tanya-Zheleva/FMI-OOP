@@ -15,8 +15,15 @@ int main()
 		v.push_back(10);
 		v.push_back(7);
 
-		v.resize(-7);
-		v.print();;
+		//v.resize(-7);
+		v.print();
+
+		for (Vector<int>::Iterator it = v.getIterator(); !it.endReached(); it.moveNext())
+		{
+			cout << it.getCurrent() << ' ';
+		}
+
+		cout << endl;
 	}
 	catch (const std::exception& ex)
 	{
