@@ -20,11 +20,12 @@ public:
 	FolkClub& operator=(const FolkClub&);
 	~FolkClub();
 
+	const char* MusicType() const;
+	int Capacity() const;
 	Club* Clone() const;
 	bool AddUser(const User&);
 
-
-	void Print() const;
+	friend std::ostream& operator<<(std::ostream&, const FolkClub*);
 };
 
 FolkClub::FolkClub(const char* name, double vodkaPrice, double whiskeyPrice, const char* singer) : Club(name, vodkaPrice, whiskeyPrice)
@@ -119,7 +120,7 @@ Club* FolkClub::Clone() const
 
 bool FolkClub::AddUser(const User& user)
 {
-	if (userCount >= capacity)
+	if (userCount >= capacity || !user.LikesMusicInClub(MusicType()))
 	{
 		return false;
 	}
@@ -130,16 +131,25 @@ bool FolkClub::AddUser(const User& user)
 	return true;
 }
 
-
-
-
-void FolkClub::Print() const
+const char* FolkClub::MusicType() const
 {
-	std::cout << name << ' ' << vodkaPrice << ' ' << whiskeyPrice << ' ' << capacity << ' ' << singer << std::endl;
-	std::cout << "Users: " << std::endl;
-
-	for (int i = 0; i < userCount; i++)
-	{
-		std::cout << users[i];
-	}
+	return "Folk";
 }
+
+int FolkClub::Capacity() const
+{
+	return capacity;
+}
+
+//std::ostream& operator<<(std::ostream& os, const FolkClub* club)
+//{
+//	os << club->name << ' ' << club->vodkaPrice << ' ' << club->whiskeyPrice << ' ' << club->capacity << ' ' << club->singer << std::endl;
+//	std::cout << "Users: " << std::endl;
+//
+//	for (int i = 0; i < club->userCount; i++)
+//	{
+//		std::cout << club->users[i];
+//	}
+//
+//	return os;
+//}

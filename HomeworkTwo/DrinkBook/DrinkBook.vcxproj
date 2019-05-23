@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Club.h" />
+    <ClInclude Include="Clubs.h" />
     <ClInclude Include="FolkClub.h" />
     <ClInclude Include="HouseClub.h" />
     <ClInclude Include="RockClub.h" />

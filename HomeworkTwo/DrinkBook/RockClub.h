@@ -17,6 +17,8 @@ public:
 	RockClub& operator=(const RockClub&);
 	~RockClub();
 
+	const char* MusicType() const;
+	int Capacity() const;
 	Club* Clone() const;
 	bool AddUser(const User&);
 
@@ -94,8 +96,7 @@ Club* RockClub::Clone() const
 
 bool RockClub::AddUser(const User& user)
 {
-
-	if (userCount >= capacity)
+	if (userCount >= capacity || !user.LikesMusicInClub(MusicType()))
 	{
 		return false;
 	}
@@ -104,6 +105,16 @@ bool RockClub::AddUser(const User& user)
 	userCount++;
 
 	return true;
+}
+
+const char* RockClub::MusicType() const
+{
+	return "Rock";
+}
+
+int RockClub::Capacity() const
+{
+	return capacity;
 }
 
 void RockClub::Print() const

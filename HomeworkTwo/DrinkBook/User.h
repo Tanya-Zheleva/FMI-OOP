@@ -32,7 +32,7 @@ public:
 	double GetCash() const;
 	const char* GetMusic() const;
 
-	bool LikesMusicInClub(const char*);
+	bool LikesMusicInClub(const char*) const;
 
 	friend std::ostream& operator<<(std::ostream&, const User&);
 };
@@ -170,9 +170,42 @@ const char* User::GetMusic() const
 	return music;
 }
 
-bool User::LikesMusicInClub(const char* music)
+bool User::LikesMusicInClub(const char* musicType) const
 {
-	return false;
+	if (!strcmp(music, musicType))
+	{
+		return true;
+	}
+
+	if (!strcmp(music, "Rock"))
+	{
+		if (!strcmp(musicType, "House"))
+		{
+			return true;
+		}
+
+		return false;
+	} 
+	else if (!strcmp(music, "House"))
+	{
+		if (!strcmp(musicType, "Folk"))
+		{
+			return true;
+		}
+
+		return false;
+	}
+	else if (!strcmp(music, "Folk"))
+	{
+		if (!strcmp(musicType, "Rock"))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	return true;
 }
 
 std::ostream& operator<<(std::ostream& os, const User& user)

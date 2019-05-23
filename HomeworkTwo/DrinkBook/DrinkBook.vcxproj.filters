@@ -35,5 +35,8 @@
     <ClInclude Include="HouseClub.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Clubs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

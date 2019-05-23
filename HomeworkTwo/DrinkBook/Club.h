@@ -32,9 +32,10 @@ public:
 	double GetWhiskeyPrice() const;
 	int GetUserCount() const;
 
+	virtual const char* MusicType() const = 0; 
+	virtual int Capacity() const = 0;
 	virtual Club* Clone() const = 0;
 	virtual bool AddUser(const User&) = 0;
-	virtual void Print() const = 0;
 };
 
 Club::Club(const char* name, double vodkaPrice, double whiskeyPrice)
@@ -80,7 +81,7 @@ void Club::SetName(const char* name)
 {
 	if (name == "" || name == nullptr)
 	{
-		name = "33";
+		name = "None";
 	}
 
 	int len = strlen(name) + 1;
