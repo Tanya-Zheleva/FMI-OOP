@@ -120,6 +120,8 @@
   <ItemGroup>
     <ClInclude Include="Club.h" />
     <ClInclude Include="FolkClub.h" />
+    <ClInclude Include="HouseClub.h" />
+    <ClInclude Include="RockClub.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,16 +1,27 @@
 #include <iostream>
-#include "Club.h"
 #include "FolkClub.h"
+#include "RockClub.h"
 
 using namespace std;
 
 int main()
 {
-	Club* c = new FolkClub("Plazza", 12, 10, "Galena");
-	Club* c2 = new FolkClub(c->Clone());
+	User u("Ivan", 15, 35, 2, 3, "Rock");
 
-	delete c;
-	delete c2;
+	//Club* c = new RockClub("Force", 12, 10);
+	//c->AddUser(u);
+	//c->Print();
+
+	//cout << c->GetVodkaPrice() << endl;
+
+	//delete c;
+
+	RockClub r("Force", 12, 10);
+	r.AddUser(u);
+
+	RockClub r2(r);
+	r2.Print();
+
 	while (true) { }
 	return 0;
 }

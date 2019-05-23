@@ -29,5 +29,11 @@
     <ClInclude Include="FolkClub.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RockClub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HouseClub.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
