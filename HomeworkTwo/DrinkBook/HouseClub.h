@@ -24,7 +24,6 @@ public:
 	int Capacity() const;
 	Club* Clone() const;
 	bool AddUser(const User&);
-
 	void Print() const;
 };
 
@@ -153,11 +152,17 @@ int HouseClub::Capacity() const
 
 void HouseClub::Print() const
 {
-	std::cout << name << ' ' << vodkaPrice << ' ' << whiskeyPrice << ' ' << capacity << ' ' << djCount << std::endl;
+	std::cout << name << ' ';
+	std::cout << "vodka price: " << vodkaPrice << ", ";
+	std::cout << "whiskey price: " << whiskeyPrice << ", ";
+	std::cout << "capacity: " << capacity << ", ";
+	std::cout << "dj count: " << djCount << std::endl;
 	std::cout << "Users: " << std::endl;
 
 	for (int i = 0; i < userCount; i++)
 	{
 		std::cout << users[i];
 	}
+
+	std::cout << std::endl;
 }

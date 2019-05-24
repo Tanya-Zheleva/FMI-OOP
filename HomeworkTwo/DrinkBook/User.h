@@ -31,6 +31,8 @@ public:
 	void SetCash(double);
 	double GetCash() const;
 	const char* GetMusic() const;
+	int GetVodkas() const;
+	int GetWhiskeys() const;
 
 	bool LikesMusicInClub(const char*) const;
 
@@ -142,7 +144,7 @@ void User::SetMusic(const char* music)
 {
 	if (music == "" || music == nullptr)
 	{
-		music = "Everything";
+		music = "All";
 	}
 
 	int len = strlen(music) + 1;
@@ -168,6 +170,16 @@ double User::GetCash() const
 const char* User::GetMusic() const
 {
 	return music;
+}
+
+int User::GetVodkas() const
+{
+	return vodkas;
+}
+
+int User::GetWhiskeys() const
+{
+	return whiskeys;
 }
 
 bool User::LikesMusicInClub(const char* musicType) const
@@ -210,7 +222,12 @@ bool User::LikesMusicInClub(const char* musicType) const
 
 std::ostream& operator<<(std::ostream& os, const User& user)
 {
-	std::cout << user.name << ' ' << user.age << ' ' << user.cash << ' ' << user.vodkas << ' ' << user.whiskeys << ' ' << user.music << std::endl;
+	os << user.name << ", "; 
+	os << "age: " << user.age << ", ";
+	os << "cash: " << user.cash << ", ";
+	os << "vodkas: " << user.vodkas << ", ";
+	os << "whiskeys: " << user.whiskeys << ", ";
+	os << "music: " << user.music << std::endl;
 
 	return os;
 }

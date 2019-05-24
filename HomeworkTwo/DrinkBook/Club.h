@@ -6,6 +6,7 @@ class Club
 {
 private:
 	void SetName(const char*);
+	int IndexOfRemoved(const char*);
 
 	void CopyFrom(const Club&);
 	void Free();
@@ -31,11 +32,14 @@ public:
 	double GetVodkaPrice() const;
 	double GetWhiskeyPrice() const;
 	int GetUserCount() const;
+	bool ContainsUser(const char*) const;
+	bool RemoveUser(const char*);
 
 	virtual const char* MusicType() const = 0; 
 	virtual int Capacity() const = 0;
 	virtual Club* Clone() const = 0;
 	virtual bool AddUser(const User&) = 0;
+	virtual void Print() const = 0;
 };
 
 Club::Club(const char* name, double vodkaPrice, double whiskeyPrice)
@@ -107,4 +111,49 @@ double Club::GetWhiskeyPrice() const
 int Club::GetUserCount() const
 {
 	return userCount;
+}
+
+bool Club::ContainsUser(const char* userName) const
+{
+	for (int i = 0; i < userCount; i++)
+	{
+		if (!strcmp(users[i].GetName(), userName))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+int Club::IndexOfRemoved(const char* userName)
+{
+	for (int i = 0; i < userCount; i++)
+	{
+		if (!strcmp(users[i].GetName(), userName))
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+bool Club::RemoveUser(const char* userName)
+{
+	if (!ContainsUser(userName))
+	{
+		return false;
+	}
+
+	int index = IndexOfRemoved(userName);
+
+	for (int i = index; i < userCount - 1; i++)
+	{
+		users[i] = users[i + 1];
+	}
+
+	userCount--;
+
+	return true;
 }
