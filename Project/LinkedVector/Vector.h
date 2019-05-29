@@ -13,36 +13,10 @@ private:
 	void free();
 	void fill(const unsigned int, const T&);
 	void copyFrom(const Vector<T>&);
-	T& elementAt(const unsigned int) const;
+	int calculateClosestPowerOfTwo() const;
 
-public:
-	class Iterator
-	{
-	private:
-		Node<T>* start;
-		Node<T>* current;
-
-	public:
-		Iterator();
-		Iterator(const Node<T>*);
-
-		const T& getCurrent() const;
-		void setCurrent(const T&);
-		void moveNext();
-		void restart();
-		bool endReached() const;
-
-		/*T& operator*() const;
-		bool operator!=(const Iterator&);
-		Iterator& operator++(int);*/
-	};
-
-	Vector<T>::Iterator getIterator() const;
-	//Iterator begin();
-	//Iterator end();
-
+public:	
 	//TODO: Add move constructor
-
 	Vector();
 	Vector(const unsigned int); // n elements, if int all are 0
 	Vector(const unsigned int, const T&); // n elements with value m
@@ -54,98 +28,104 @@ public:
 
 	T& operator [](const unsigned int);
 	const T& operator [](const unsigned int) const;
+	T& at(const unsigned int) const;
 
 	void push_back(const T&);
 	void pop_back();
 
-	unsigned int size() const;
+	int size() const;
+	int capacity() const; // *bonus*
 	void resize(const int);
 	bool empty() const;
 	const T& back() const; // value of last element
+	const T& front() const; //value of first element *bonus*
 	void clear();
-
+	void swap(Vector<T>&); // *bonus*
 
 	void print() const;
-};
 
-template <typename T>
-Vector<T>::Iterator::Iterator() : start(nullptr), current(nullptr)
-{
-}
-
-template <typename T>
-Vector<T>::Iterator::Iterator(const Node<T>* ptr) : start(ptr), current(ptr)
-{
-}
-
-template <typename T>
-const T& Vector<T>::Iterator::getCurrent() const
-{
-	return current->value;
-}
-
-template <typename T>
-void Vector<T>::Iterator::setCurrent(const T& value)
-{
-	current->value = value;
-}
-
-template <typename T>
-void Vector<T>::Iterator::moveNext()
-{
-	if (current)
+	class Iterator
 	{
-		current = current->next;
+	private:
+		Node<T>* start;
+		Node<T>* current;
+
+	public:
+		Iterator() : start(first), current(first)
+		{
+		}
+
+		Iterator(Node<T>* ptr) : start(ptr), current(ptr)
+		{
+		}
+
+		Iterator& operator=(Node<T>* ptr)
+		{
+			current = ptr;
+
+			return *this;
+		}
+
+		Iterator& operator +=(int positions)
+		{
+			while (positions > 0 && current == nullptr)
+			{
+				current = current->next;
+				positions--;
+			}
+
+			return *this;
+		}
+
+		bool operator!=(const Iterator& iterator) const
+		{
+			return current != iterator.current;
+		}
+
+		bool operator==(const Iterator& iterator) const
+		{
+			return current == iterator.current;
+		}
+
+		const T& operator*() const
+		{
+			return current->value;
+		}
+
+		T& operator*()
+		{
+			return current->value;
+		}
+
+		Iterator& operator++()
+		{
+			if (current)
+			{
+				current = current->next;
+			}
+
+			return *this;
+		}
+
+		Iterator& operator++(int)
+		{
+			Iterator iterator = *this;
+			++*this;
+
+			return iterator;
+		}
+	};
+
+	Iterator begin() const
+	{
+		return Iterator(first);
 	}
-}
 
-template <typename T>
-void Vector<T>::Iterator::restart()
-{
-	current = start;
-}
-
-template <typename T>
-bool Vector<T>::Iterator::endReached() const
-{
-	return current == nullptr;
-}
-
-template <typename T>
-Vector<T>::Iterator Vector<T>::getIterator() const
-{
-	return Iterator(first);
-}
-
-//template <typename T>
-//T& Vector<T>::Iterator::operator*() const
-//{
-//	return pointer->value;
-//}
-//
-//template <typename T>
-//bool Vector<T>::Iterator::operator!=(const Iterator& other)
-//{
-//	return pointer != other.pointer;
-//}
-//
-//template <typename T>
-//Iterator Vector<T>::Iterator::operator++()
-//{
-//
-//}
-
-
-
-
-
-
-
-
-
-
-
-
+	Iterator end() const
+	{
+		return Iterator(nullptr);
+	}
+};
 
 
 template <typename T>
@@ -195,15 +175,27 @@ Vector<T>& Vector<T>::operator=(const Vector<T>& other)
 // operations
 
 template <typename T>
-unsigned int Vector<T>::size() const
+int Vector<T>::size() const
 {
 	return index;
+}
+
+template <typename T>
+int Vector<T>::capacity() const
+{
+	return calculateClosestPowerOfTwo();
 }
 
 template <typename T>
 const T& Vector<T>::back() const
 {
 	return last->value;
+}
+
+template <typename T>
+const T& Vector<T>::front() const
+{
+	return first->value;
 }
 
 template <typename T>
@@ -225,6 +217,14 @@ void Vector<T>::clear()
 	}
 
 	index = 0;
+}
+
+template <typename T>
+void Vector<T>::swap(Vector<T>& other)
+{
+	Vector<T> temp = *this;
+	*this = other;
+	other = temp;
 }
 
 template <typename T>
@@ -302,41 +302,17 @@ void Vector<T>::resize(const int n)
 template <typename T>
 T& Vector<T>::operator[](const unsigned int positon)
 {
-	return elementAt(positon);
+	return at(positon);
 }
 
 template <typename T>
 const T& Vector<T>::operator[](const unsigned int position) const
 {
-	return elementAt(position);
-}
-
-
-//private
-
-template <typename T>
-void Vector<T>::fill(const unsigned int times, const T& value)
-{
-	for (unsigned i = 0; i < times; i++)
-	{
-		push_back(value);
-	}
+	return at(position);
 }
 
 template <typename T>
-void Vector<T>::copyFrom(const Vector<T>& other)
-{
-	Node<T>* temp = other.first;
-
-	while (temp != nullptr)
-	{
-		push_back(temp->value);
-		temp = temp->next;
-	}
-}
-
-template <typename T>
-T& Vector<T>::elementAt(const unsigned int positon) const
+T& Vector<T>::at(const unsigned int positon) const
 {
 	if (positon >= index)
 	{
@@ -359,7 +335,46 @@ T& Vector<T>::elementAt(const unsigned int positon) const
 	}
 }
 
-////////////////////////////
+//private
+
+template <typename T>
+int Vector<T>::calculateClosestPowerOfTwo() const
+{
+	if (index < 2)
+	{
+		return 2;
+	}
+
+	int capacity = 2;
+
+	while (capacity <= index)
+	{
+		capacity *= 2;
+	}
+
+	return capacity;
+}
+
+template <typename T>
+void Vector<T>::fill(const unsigned int times, const T& value)
+{
+	for (unsigned i = 0; i < times; i++)
+	{
+		push_back(value);
+	}
+}
+
+template <typename T>
+void Vector<T>::copyFrom(const Vector<T>& other)
+{
+	Node<T>* temp = other.first;
+
+	while (temp != nullptr)
+	{
+		push_back(temp->value);
+		temp = temp->next;
+	}
+}
 
 template <typename T>
 void Vector<T>::print() const

@@ -5,9 +5,9 @@ class Vector
 {
 private:
 	T* m_buffer;
-	unsigned int index;
-	unsigned int m_size;
-	unsigned int m_capacity;
+	int index;
+	int m_size;
+	int m_capacity;
 
 	void free();
 	void calcCapacity(int);
