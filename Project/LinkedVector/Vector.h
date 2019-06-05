@@ -87,12 +87,7 @@ public:
 			return current == iterator.current;
 		}
 
-		const T& operator*() const
-		{
-			return current->value;
-		}
-
-		T& operator*()
+		T& operator*() const
 		{
 			return current->value;
 		}

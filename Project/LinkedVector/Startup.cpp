@@ -21,22 +21,18 @@ int main()
 		v2.push_back(3);
 		v2.push_back(4);
 
-		//v.swap(v2);
-		v = v2;
 
-		/*for (Vector<int>::Iterator it = v.begin(); it != v.end(); it++)
+		for (Vector<int>::Iterator it = v.begin(); it != v.end(); it++)
+		{
+			->it
+		}
+
+		for (Vector<int>::Iterator it = v.begin(); it != v.end(); it++)
 		{
 			cout << *it << ' ';
 		}
 
 		cout << endl;
-
-		for (Vector<int>::Iterator it = v2.begin(); it != v2.end(); it++)
-		{
-			cout << *it << ' ';
-		}*/
-
-		//cout << endl;
 	}
 	catch (const std::exception& ex)
 	{

@@ -23,5 +23,11 @@
     <ClInclude Include="BooleanExpression.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Operation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Variable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -68,7 +68,7 @@ void Clubs::CopyFrom(const Clubs& other)
 	capacity = other.capacity;
 	count = other.count;
 
-	for (size_t i = 0; i < count; i++)
+	for (int i = 0; i < count; i++)
 	{
 		clubs[i] = other.clubs[i]->Clone();
 	}
