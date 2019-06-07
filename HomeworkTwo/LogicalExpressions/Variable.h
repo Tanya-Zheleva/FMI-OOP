@@ -7,6 +7,7 @@ class Variable : public BooleanExpression
 private:
 	char name;
 	bool Evaluate() const;
+	bool EvaluateWithFalse() const;
 
 public:
 	Variable(const char);
@@ -55,6 +56,11 @@ bool Variable::IsTautology() const
 bool Variable::Evaluate() const
 {
 	return true;
+}
+
+bool Variable::EvaluateWithFalse() const
+{
+	return false;
 }
 
 void Variable::Fill(char* list, int& index)

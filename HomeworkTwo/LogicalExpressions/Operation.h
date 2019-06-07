@@ -12,7 +12,8 @@ private:
 	int variablesFound;
 
 	bool Evaluate() const;
-	//bool EvalueateWithOperation(bool, bool) const;
+	bool EvaluateWithFalse() const;
+	bool EvalueateWithOperation(bool, bool) const;
 	void Fill(char*, int&);
 
 public:
@@ -95,9 +96,10 @@ void Operation::Fill(char* list, int& index)
 int Operation::CountVariables() 
 {
 	Fill(variableList, variablesFound);
+	variableList[variablesFound] = '\0';
 	int count = 1;
 
-	for (int i = 1; i < variablesFound - 1; i++)
+	for (int i = 0; i < variablesFound - 1; i++)
 	{
 		bool isCurrentFound = false;
 
@@ -131,19 +133,31 @@ bool Operation::IsContingency() const
 
 bool Operation::IsTautology() const
 {
+	if (!right)
+	{
+		return false;
+	}
+
+	bool bothF = EvalueateWithOperation(left->EvaluateWithFalse(), right->EvaluateWithFalse());
+	bool leftF = EvalueateWithOperation(left->EvaluateWithFalse(), right->Evaluate());
+	bool rightF = EvalueateWithOperation(left->Evaluate(), right->EvaluateWithFalse());
+	bool bothT = EvalueateWithOperation(left->Evaluate(), right->Evaluate());
+
+	return bothF && leftF && rightF && bothT;
+
 	/*if (!right)
 	{
 		return false;
 	}
 
-	bool bothF = EvalueateWithOperation(!left->Evaluate(), !right->Evaluate());
-	bool leftF = EvalueateWithOperation(!left->Evaluate(), right->Evaluate());
-	bool rightF = EvalueateWithOperation(left->Evaluate(), !right->Evaluate());
-	bool bothT = EvalueateWithOperation(left->Evaluate(), right->Evaluate());
+	bool bothF = left->EvaluateWithFalse() == right->EvaluateWithFalse();
+	bool leftF = left->EvaluateWithFalse() == right->Evaluate();
+	bool rightF = left->Evaluate() == !right->EvaluateWithFalse();
+	bool bothT = left->Evaluate() == right->Evaluate();
 
 	return bothF && leftF && rightF && bothT;*/
 
-	return true;
+	//return true;
 }
 
 bool Operation::Evaluate() const
@@ -183,28 +197,65 @@ bool Operation::Evaluate() const
 	return result;
 }
 
-//bool Operation::EvalueateWithOperation(bool l, bool r) const
-//{
-//	if (!strcmp(operation, "^"))
-//	{
-//		return l && r;
-//	}
-//	else if (!strcmp(operation, "|"))
-//	{
-//		return l || r;
-//	}
-//	else if (!strcmp(operation, "+"))
-//	{
-//		return l ^ r;
-//	}
-//	else if (!strcmp(operation, "->"))
-//	{
-//		return !l || r;
-//	}
-//	else if (!strcmp(operation, "<->"))
-//	{
-//		return l == r;
-//	}
-//
-//	return false;
-//}
+bool Operation::EvaluateWithFalse() const
+{
+	bool result = left->EvaluateWithFalse();
+
+	if (right)
+	{
+		bool secondValue = right->EvaluateWithFalse();
+
+		if (operation == '^')
+		{
+			result = result && secondValue;
+		}
+		else if (operation == '|')
+		{
+			result = result || secondValue;
+		}
+		else if (operation == '+')
+		{
+			result = result ^ secondValue;
+		}
+		else if (operation == '>')
+		{
+			result = !result || secondValue;
+		}
+		else if (operation == '=')
+		{
+			result = result == secondValue;
+		}
+	}
+	else
+	{
+		return !result;
+	}
+
+	return result;
+}
+
+bool Operation::EvalueateWithOperation(bool l, bool r) const
+{
+	if (operation == '^')
+	{
+		return l && r;
+	}
+	else if (operation == '|')
+	{
+		return l || r;
+	}
+	else if (operation == '+')
+	{
+		return l ^ r;
+	}
+	else if (operation == '>')
+	{
+		return !l || r;
+	}
+	else if (operation == '=')
+	{
+		return l == r;
+	}
+
+	return false;
+}
