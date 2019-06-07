@@ -10,15 +10,11 @@ private:
 	void SetVodkaPrice(double);
 	void SetWhiskeyPrice(double);
 	void SetDjCount(int);
-
-	void CopyFrom(const HouseClub&);
 	void Resize();
 
 public:
 	HouseClub(const char*, double, double, int);
-	HouseClub(const HouseClub&);
-	HouseClub& operator=(const HouseClub&);
-	~HouseClub();
+	~HouseClub() {};
 
 	const char* MusicType() const;
 	int Capacity() const;
@@ -34,41 +30,6 @@ HouseClub::HouseClub(const char* name, double vodkaPrice, double whiskeyPrice, i
 	SetVodkaPrice(vodkaPrice);
 	SetWhiskeyPrice(whiskeyPrice);
 	SetDjCount(djCount);
-}
-
-HouseClub::HouseClub(const HouseClub& other) : Club(other)
-{
-	CopyFrom(other);
-}
-
-HouseClub& HouseClub::operator=(const HouseClub& other)
-{
-	if (this != &other)
-	{
-		Club::operator=(other);
-		CopyFrom(other);
-	}
-
-	return *this;
-}
-
-HouseClub::~HouseClub()
-{
-}
-
-void HouseClub::CopyFrom(const HouseClub& other)
-{
-	SetVodkaPrice(other.vodkaPrice);
-	SetWhiskeyPrice(other.whiskeyPrice);
-	SetDjCount(other.djCount);
-
-	capacity = other.capacity;
-	users = new User[capacity];
-
-	for (int i = 0; i < other.userCount; i++)
-	{
-		users[i] = other.users[i];
-	}
 }
 
 void HouseClub::SetVodkaPrice(double price)
@@ -157,11 +118,20 @@ void HouseClub::Print() const
 	std::cout << "whiskey price: " << whiskeyPrice << ", ";
 	std::cout << "capacity: " << capacity << ", ";
 	std::cout << "dj count: " << djCount << std::endl;
-	std::cout << "Users: " << std::endl;
+	std::cout << "Users: ";
 
-	for (int i = 0; i < userCount; i++)
+	if (userCount > 0)
 	{
-		std::cout << users[i];
+		std::cout << std::endl;
+
+		for (int i = 0; i < userCount; i++)
+		{
+			std::cout << users[i];
+		}
+	}
+	else
+	{
+		std::cout << "none";
 	}
 
 	std::cout << std::endl;

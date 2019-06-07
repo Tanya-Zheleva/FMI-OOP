@@ -22,14 +22,13 @@ int main()
 		v2.push_back(4);
 
 
-		for (Vector<int>::Iterator it = v.begin(); it != v.end(); it++)
-		{
-			->it
-		}
+		cout << v2[2] << endl;
+		v2[2] = 17;
+		cout << v2[2] << endl;
 
 		for (Vector<int>::Iterator it = v.begin(); it != v.end(); it++)
 		{
-			cout << *it << ' ';
+			
 		}
 
 		cout << endl;

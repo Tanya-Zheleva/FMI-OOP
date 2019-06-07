@@ -15,32 +15,29 @@ private:
 	void copyFrom(const Vector<T>&);
 	int calculateClosestPowerOfTwo() const;
 
-public:	
-	//TODO: Add move constructor
+public:
 	Vector();
 	Vector(const unsigned int); // n elements, if int all are 0
 	Vector(const unsigned int, const T&); // n elements with value m
-//	Vector(typename vector<T>::iterator, typename vector<T>::iterator); // range constructor
-//	Vector(std::initializer_list<T>); // move constructor ?
 	Vector(const Vector<T>&);
 	~Vector();
 	Vector<T>& operator=(const Vector<T>&);
 
-	T& operator [](const unsigned int);
-	const T& operator [](const unsigned int) const;
+	T& operator[](const unsigned int);
+	const T operator[](const unsigned int) const;
 	T& at(const unsigned int) const;
 
 	void push_back(const T&);
 	void pop_back();
+	void resize(const int);
+	void clear();
+	void swap(Vector<T>&); // *bonus*
 
 	int size() const;
 	int capacity() const; // *bonus*
-	void resize(const int);
 	bool empty() const;
-	const T& back() const; // value of last element
-	const T& front() const; //value of first element *bonus*
-	void clear();
-	void swap(Vector<T>&); // *bonus*
+	const T back() const; // value of last element
+	const T front() const; //value of first element *bonus*
 
 	void print() const;
 
@@ -182,14 +179,24 @@ int Vector<T>::capacity() const
 }
 
 template <typename T>
-const T& Vector<T>::back() const
+const T Vector<T>::back() const
 {
+	if (empty())
+	{
+		throw std::invalid_argument("Vector is empty.");
+	}
+
 	return last->value;
 }
 
 template <typename T>
-const T& Vector<T>::front() const
+const T Vector<T>::front() const
 {
+	if (empty())
+	{
+		throw std::invalid_argument("Vector is empty.");
+	}
+
 	return first->value;
 }
 
@@ -240,12 +247,16 @@ void Vector<T>::push_back(const T& value)
 	}
 
 	index++;
-	temp = nullptr; //must? no delete
 }
 
 template <typename T>
 void Vector<T>::pop_back()
 {
+	if (index == 0)
+	{
+		throw std::invalid_argument("Vector is empty.");
+	}
+
 	Node<T>* current = first;
 	Node<T>* prev = nullptr;
 
@@ -301,7 +312,7 @@ T& Vector<T>::operator[](const unsigned int positon)
 }
 
 template <typename T>
-const T& Vector<T>::operator[](const unsigned int position) const
+const T Vector<T>::operator[](const unsigned int position) const
 {
 	return at(position);
 }

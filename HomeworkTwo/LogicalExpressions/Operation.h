@@ -6,37 +6,45 @@ class Operation : public BooleanExpression
 {
 private:
 	BooleanExpression* left;
-	char operation[4];
+	char operation;
 	BooleanExpression* right;
+	char* variableList;
+	int variablesFound;
 
-	bool Evaluate();// const;
-	bool TestT();
-	bool EvalueateWithOperation(bool, bool);
+	bool Evaluate() const;
+	//bool EvalueateWithOperation(bool, bool) const;
+	void Fill(char*, int&);
 
 public:
-	Operation(BooleanExpression*, const char[4], BooleanExpression*);
+	int CountRepeatingVariables() const;
+	Operation(BooleanExpression*, const char, BooleanExpression*);
 	Operation(const Operation&) = delete;
 	Operation& operator=(const Operation&) = delete;
 	~Operation();
 
 	void Print() const;
-	int CountVariables() const;
+	int CountVariables();
 	bool IsContradiction() const;
 	bool IsTautology() const;
 	bool IsContingency() const;
 };
 
-Operation::Operation(BooleanExpression* left, const char operation[4], BooleanExpression* right = nullptr)
+Operation::Operation(BooleanExpression* left, const char operation, BooleanExpression* right = nullptr)
 {
 	this->left = left;
-	strcpy_s(this->operation, 4, operation);
+	this->operation = operation;
 	this->right = right;
+
+	variablesFound = 0;
+	int valiableListLength = CountRepeatingVariables() + 1;
+	variableList = new char[valiableListLength];
 }
 
 Operation::~Operation()
 {
 	delete left;
-	
+	delete[] variableList;
+
 	if (right)
 	{
 		delete right;
@@ -62,13 +70,50 @@ void Operation::Print() const
 	}
 }
 
-int Operation::CountVariables() const
+int Operation::CountRepeatingVariables() const
 {
-	int count = left->CountVariables();
-	
+	int count = left->CountRepeatingVariables();
+
 	if (right)
 	{
-		count += right->CountVariables();
+		count += right->CountRepeatingVariables();
+	}
+
+	return count;
+}
+
+void Operation::Fill(char* list, int& index)
+{
+	left->Fill(list, index);
+
+	if (right)
+	{
+		right->Fill(list, index);
+	}
+}
+
+int Operation::CountVariables() 
+{
+	Fill(variableList, variablesFound);
+	int count = 1;
+
+	for (int i = 1; i < variablesFound - 1; i++)
+	{
+		bool isCurrentFound = false;
+
+		for (int j = i + 1; j < variablesFound; j++)
+		{
+			if (variableList[i] == variableList[j])
+			{
+				isCurrentFound = true;
+				break;
+			}
+		}
+
+		if (!isCurrentFound)
+		{
+			count++;
+		}
 	}
 
 	return count;
@@ -86,80 +131,7 @@ bool Operation::IsContingency() const
 
 bool Operation::IsTautology() const
 {
-	if (right)
-	{
-		
-	}
-
-	return false;
-}
-
-bool Operation::Evaluate() //const
-{
-	bool result = left->Evaluate();
-	
-	if (right)
-	{
-		bool secondValue = right->Evaluate();
-
-		if (!strcmp(operation, "^"))
-		{
-			/*firstCase = !result && !secondValue;
-			secondCase = !result && secondValue;
-			thridCase = result && !secondValue;
-			fourthCase = result && secondValue;*/
-			result = result && secondValue;
-		}
-		else if (!strcmp(operation, "|"))
-		{
-			/*firstCase = !result || !secondValue;
-			secondCase = !result || secondValue;
-			thridCase = result || !secondValue;
-			fourthCase = result || secondValue;*/
-			result = result || secondValue;
-		}
-		else if (!strcmp(operation, "+"))
-		{
-			/*firstCase = !result ^ !secondValue;
-			secondCase = !result ^ secondValue;
-			thridCase = result ^ !secondValue;
-			fourthCase = result ^ secondValue;*/
-			result = result ^ secondValue;
-		}
-		else if (!strcmp(operation, "->"))
-		{
-			/*firstCase = result || !secondValue;
-			secondCase = result || secondValue;
-			thridCase = !result || !secondValue;
-			fourthCase = !result || secondValue;*/
-			result = !result || secondValue;
-		}
-		else if (!strcmp(operation, "<->"))
-		{
-			/*firstCase = result == !secondValue;
-			secondCase = result == secondValue;
-			thridCase = !result == !secondValue;
-			fourthCase = !result == secondValue;*/
-			result = result == secondValue;
-		}
-	}
-	else
-	{
-		/*whenOneVar1 = false;
-		whenOneVar2 = true;
-		return whenOneVar1 && whenOneVar2;*/
-
-		return !result;
-	}
-	//return firstCase && secondCase && thridCase && fourthCase;
-
-	return result;
-}
-
-
-
-bool Operation::TestT() {
-	if (!right)
+	/*if (!right)
 	{
 		return false;
 	}
@@ -169,31 +141,70 @@ bool Operation::TestT() {
 	bool rightF = EvalueateWithOperation(left->Evaluate(), !right->Evaluate());
 	bool bothT = EvalueateWithOperation(left->Evaluate(), right->Evaluate());
 
-	return bothF && leftF && rightF && bothT;
+	return bothF && leftF && rightF && bothT;*/
+
+	return true;
 }
 
-bool Operation::EvalueateWithOperation(bool l, bool r)
+bool Operation::Evaluate() const
 {
-	if (!strcmp(operation, "^"))
+	bool result = left->Evaluate();
+	
+	if (right)
 	{
-		return l && r;
+		bool secondValue = right->Evaluate();
+
+		if (operation == '^')
+		{
+			result = result && secondValue;
+		}
+		else if (operation == '|')
+		{
+			result = result || secondValue;
+		}
+		else if (operation == '+')
+		{
+			result = result ^ secondValue;
+		}
+		else if (operation == '>')
+		{
+			result = !result || secondValue;
+		}
+		else if (operation == '=')
+		{
+			result = result == secondValue;
+		}
 	}
-	else if (!strcmp(operation, "|"))
+	else
 	{
-		return l || r;
-	}
-	else if (!strcmp(operation, "+"))
-	{
-		return l ^ r;
-	}
-	else if (!strcmp(operation, "->"))
-	{
-		return !l || r;
-	}
-	else if (!strcmp(operation, "<->"))
-	{
-		return l == r;
+		return !result;
 	}
 
-	return false;
+	return result;
 }
+
+//bool Operation::EvalueateWithOperation(bool l, bool r) const
+//{
+//	if (!strcmp(operation, "^"))
+//	{
+//		return l && r;
+//	}
+//	else if (!strcmp(operation, "|"))
+//	{
+//		return l || r;
+//	}
+//	else if (!strcmp(operation, "+"))
+//	{
+//		return l ^ r;
+//	}
+//	else if (!strcmp(operation, "->"))
+//	{
+//		return !l || r;
+//	}
+//	else if (!strcmp(operation, "<->"))
+//	{
+//		return l == r;
+//	}
+//
+//	return false;
+//}

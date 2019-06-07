@@ -17,13 +17,11 @@ protected:
 	double whiskeyPrice;
 	User* users;
 	int userCount;
+	int capacity;
 
 	Club(const char*, double, double);
 	Club(const Club&);
 	Club& operator=(const Club&);
-
-	virtual void SetVodkaPrice(double) = 0;
-	virtual void SetWhiskeyPrice(double) = 0;
 
 public:
 	virtual ~Club();
@@ -79,6 +77,16 @@ void Club::CopyFrom(const Club& other)
 {
 	SetName(other.name);
 	userCount = other.userCount;
+	vodkaPrice = other.vodkaPrice;
+	whiskeyPrice = other.whiskeyPrice;	
+	capacity = other.capacity;
+
+	users = new User[capacity];
+
+	for (int i = 0; i < other.userCount; i++)
+	{
+		users[i] = other.users[i];
+	}
 }
 
 void Club::SetName(const char* name)

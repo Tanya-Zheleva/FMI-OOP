@@ -1,5 +1,5 @@
 #pragma once
-#include "FolkClub.h"
+#include "Club.h"
 
 class Clubs
 {
@@ -9,7 +9,7 @@ private:
 	Club** clubs;
 
 	bool ContainsClub(const char*) const;
-	Club* FindByName(const char*) const;
+	int GetClubIndex(const char*) const;
 	bool UserCanPayDrinks(const User&, const char*, double) const;
 	bool UserCanEnterClub(const User&, const char*) const;
 
@@ -28,6 +28,7 @@ public:
 	bool AddHouseClub(const char*, double, double, int);
 	bool AddToClub(User&, const char*);
 	bool RemoveFromClub(const char*, const char*);
+	bool RemoveClub(const char*);
 
 	int Capacity() const;
 	int Count() const;
@@ -106,22 +107,22 @@ bool Clubs::ContainsClub(const char* name) const
 	return false;
 }
 
-Club* Clubs::FindByName(const char* name) const
+int Clubs::GetClubIndex(const char* name) const
 {
 	for (int i = 0; i < count; i++)
 	{
 		if (!strcmp(clubs[i]->GetName(), name))
 		{
-			return clubs[i];
+			return i;
 		}
 	}
 
-	return nullptr;
+	return -1;
 }
 
 bool Clubs::UserCanPayDrinks(const User& user, const char* clubName, double currentCash) const
 {
-	Club* club = FindByName(clubName);
+	Club* club = clubs[GetClubIndex(clubName)];
 
 	currentCash -= club->GetVodkaPrice() * user.GetVodkas() + club->GetWhiskeyPrice() * user.GetWhiskeys();
 
@@ -135,7 +136,7 @@ bool Clubs::UserCanPayDrinks(const User& user, const char* clubName, double curr
 
 bool Clubs::UserCanEnterClub(const User& user, const char* clubName) const
 {
-	Club* club = FindByName(clubName);
+	Club* club = clubs[GetClubIndex(clubName)];
 	
 	if (!user.LikesMusicInClub(club->MusicType()))
 	{
@@ -234,7 +235,7 @@ bool Clubs::AddToClub(User& user, const char* clubName)
 		return false;
 	}
 
-	Club* club = FindByName(clubName);
+	Club* club = clubs[GetClubIndex(clubName)];
 	double currentCash = user.GetCash();
 
 	if (user.GetAge() < 18 && !strcmp(club->MusicType(), "Folk"))
@@ -262,9 +263,28 @@ bool Clubs::RemoveFromClub(const char* userName, const char* clubName)
 		return false;
 	}
 
-	Club* club = FindByName(clubName);
+	Club* club = clubs[GetClubIndex(clubName)];
 
 	return club->RemoveUser(userName);
+}
+
+bool Clubs::RemoveClub(const char* clubName)
+{
+	if (!ContainsClub(clubName))
+	{
+		return false;
+	}
+
+	int clubIndex = GetClubIndex(clubName);
+
+	for (int i = clubIndex; i < count - 1; i++)
+	{
+		clubs[i] = clubs[i + 1];
+	}
+
+	count--;
+
+	return true;
 }
 
 void Clubs::Print() const

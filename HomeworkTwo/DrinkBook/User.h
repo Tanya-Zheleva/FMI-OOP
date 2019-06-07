@@ -127,7 +127,6 @@ void User::SetWhiskeys(int whiskeys)
 	}
 
 	this->whiskeys = whiskeys;
-
 }
 
 void User::SetCash(double cash)

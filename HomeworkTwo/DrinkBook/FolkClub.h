@@ -4,7 +4,6 @@
 class FolkClub : public Club
 {
 private:
-	int capacity;
 	char* singer;
 
 	void SetSinger(const char*);
@@ -65,17 +64,7 @@ void FolkClub::Free()
 
 void FolkClub::CopyFrom(const FolkClub& other)
 {
-	SetSinger(other.singer);
-	SetVodkaPrice(other.vodkaPrice);
-	SetWhiskeyPrice(other.whiskeyPrice);
-
-	capacity = 70;
-	users = new User[capacity];
-
-	for (int i = 0; i < other.userCount; i++)
-	{
-		users[i] = other.users[i];
-	}
+	SetSinger(other.singer);	
 }
 
 void FolkClub::SetSinger(const char* singer)
@@ -147,11 +136,20 @@ void FolkClub::Print() const
 	std::cout << "whiskey price: " << whiskeyPrice << ", ";
 	std::cout << "capacity: " << capacity << ", ";
 	std::cout << "singer " << singer << std::endl;
-	std::cout << "Users: " << std::endl;
-
-	for (int i = 0; i < userCount; i++)
+	std::cout << "Users: ";
+	
+	if (userCount > 0)
 	{
-		std::cout << users[i];
+		std::cout << std::endl;
+
+		for (int i = 0; i < userCount; i++)
+		{
+			std::cout << users[i];
+		}
+	}
+	else
+	{
+		std::cout << "none";
 	}
 
 	std::cout << std::endl;

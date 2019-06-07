@@ -6,18 +6,20 @@ class Variable : public BooleanExpression
 {
 private:
 	char name;
-	bool Evaluate();// const;
-	bool TestT();
+	bool Evaluate() const;
 
 public:
 	Variable(const char);
 	~Variable() {}
 
 	void Print() const;
-	int CountVariables() const;
+	int CountVariables();
 	bool IsContradiction() const;
 	bool IsTautology() const;
 	bool IsContingency() const;
+
+	void Fill(char*, int&);
+	int CountRepeatingVariables() const;
 };
 
 Variable::Variable(const char name)
@@ -30,7 +32,7 @@ void Variable::Print() const
 	std::cout << name;
 }
 
-int Variable::CountVariables() const
+int Variable::CountVariables()
 {
 	return 1;
 }
@@ -50,16 +52,18 @@ bool Variable::IsTautology() const
 	return true;
 }
 
-bool Variable::Evaluate() //const
+bool Variable::Evaluate() const
 {
-	/*whenOneVar1 = true;
-	whenOneVar2 = false;*/
-
 	return true;
 }
 
-
-bool Variable::TestT()
+void Variable::Fill(char* list, int& index)
 {
-	return true;
+	list[index] = name;
+	index++;
+}
+
+int Variable::CountRepeatingVariables() const
+{
+	return 1;
 }

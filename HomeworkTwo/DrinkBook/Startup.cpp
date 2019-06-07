@@ -1,4 +1,3 @@
-#include <iostream>
 #include "FolkClub.h"
 #include "RockClub.h"
 #include "HouseClub.h"
@@ -16,11 +15,13 @@ int main()
 	clubs.AddFolkClub("33", 50, 35, "Galena");
 	clubs.AddHouseClub("Shots", 50, 47, 3);
 	clubs.AddRockClub("Force", 45, 56);
+	clubs.AddFolkClub("Plazza", 60, 65, "Desislava");
 
 	clubs.AddToClub(u, "Force");
 	clubs.AddToClub(u2, "Force");
 	clubs.AddToClub(u3, "Force");
 
+	clubs.RemoveClub("33");
 	clubs.RemoveFromClub("Ivan", "Force");
 
 	clubs.Print();
